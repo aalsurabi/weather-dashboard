@@ -145,10 +145,10 @@ export default function WeatherDashboard() {
   const isCurrentFavorite = weatherData ? favorites.some(fav => fav.name === weatherData.location.name) : false;
 
   return (
-    <div className="w-full min-h-screen bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 p-4 md:p-8 lg:p-12 flex flex-col items-center selection:bg-blue-500/30 transition-colors duration-300">
+    <div className="w-full min-h-screen bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col items-center selection:bg-blue-500/30 transition-colors duration-300">
       <div className="w-full max-w-[1500px] flex flex-col gap-8">
         <header className="flex flex-col md:flex-row justify-between items-center gap-6 py-2">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight flex items-center gap-2 select-none">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight flex items-center gap-2 select-none">
             rumble <span className="text-blue-500">Weather Dashboard</span>
           </h1>
           <div className="flex items-center gap-4 w-full md:w-auto justify-end">
@@ -233,7 +233,11 @@ export default function WeatherDashboard() {
             <div className="xl:col-span-8 flex flex-col gap-8 h-full">
               <HourlyTimeline forecast={weatherData.forecast} />
               <div className="flex-1">
-                <ForecastChart forecast={weatherData.forecast} theme={theme} />
+                <ForecastChart 
+                  forecast={weatherData.forecast} 
+                  theme={theme} 
+                  currentTemp={weatherData.currentWeather?.temperature}
+                />
               </div>
             </div>
           </main>

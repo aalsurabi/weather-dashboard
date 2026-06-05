@@ -27,7 +27,7 @@ export default function HourlyTimeline({ forecast }: HourlyTimelineProps) {
   }).slice(0, 24);
 
   return (
-    <div className="bg-white/70 dark:bg-zinc-900/60 rounded-[2.5rem] p-8 shadow-xl border border-slate-200/80 dark:border-zinc-800/60 backdrop-blur-2xl transition-colors duration-300">
+    <div className="bg-white/70 dark:bg-zinc-900/60 rounded-[2.5rem] p-4 sm:p-6 md:p-8 shadow-xl border border-slate-200/80 dark:border-zinc-800/60 backdrop-blur-2xl transition-colors duration-300">
       <h2 className="text-xl font-bold mb-8 text-slate-800 dark:text-zinc-100 tracking-wide transition-colors duration-300">Stündliche Vorhersage</h2>
       
       {/* 

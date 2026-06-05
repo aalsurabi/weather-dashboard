@@ -115,7 +115,7 @@ export default function ChatbotPopup({ currentCity }: ChatbotPopupProps) {
 
       {/* Floating Chat Window */}
       <div
-        className={`fixed bottom-24 right-6 w-[90vw] sm:w-[400px] h-[520px] max-h-[70vh] z-50 bg-white/95 dark:bg-zinc-900/95 border border-slate-200 dark:border-zinc-800 rounded-[2rem] shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right ${
+        className={`fixed bottom-24 right-6 w-[calc(100vw-48px)] sm:w-[400px] h-[520px] max-h-[70vh] z-50 bg-white/95 dark:bg-zinc-900/95 border border-slate-200 dark:border-zinc-800 rounded-[2rem] shadow-2xl backdrop-blur-xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right ${
           isOpen 
             ? 'scale-100 translate-y-0 opacity-100 pointer-events-auto' 
             : 'scale-90 translate-y-4 opacity-0 pointer-events-none'

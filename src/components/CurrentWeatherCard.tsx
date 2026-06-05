@@ -31,7 +31,7 @@ export default function CurrentWeatherCard({
   const IconComponent = weather.icon ? (IconMap[weather.icon] || Cloud) : Cloud;
 
   return (
-    <div className="bg-gradient-to-b from-blue-600 to-indigo-900 rounded-[2.5rem] p-10 shadow-2xl text-white h-full flex flex-col justify-between overflow-hidden relative">
+    <div className="bg-gradient-to-b from-blue-600 to-indigo-900 rounded-[2.5rem] p-6 sm:p-10 shadow-2xl text-white h-full flex flex-col justify-between overflow-hidden relative">
       <div className="absolute -top-16 -right-16 opacity-20 pointer-events-none">
         <IconComponent size={300} />
       </div>
@@ -42,7 +42,7 @@ export default function CurrentWeatherCard({
           <IconComponent size={36} className="text-white drop-shadow-md" />
         </div>
 
-        <div className="mt-16">
+        <div className="mt-8 sm:mt-12 md:mt-16">
           <div className="text-8xl font-black tracking-tighter drop-shadow-lg">
             {Math.round(weather.temperature ?? 0)}°C
           </div>
@@ -68,7 +68,7 @@ export default function CurrentWeatherCard({
         </div>
       </div>
 
-      <div className="z-10 relative mt-16 flex items-center justify-between bg-black/20 rounded-[2rem] p-6 backdrop-blur-md border border-white/10 shadow-inner">
+      <div className="z-10 relative mt-8 sm:mt-12 md:mt-16 flex items-center justify-between bg-black/20 rounded-[2rem] p-4 sm:p-6 backdrop-blur-md border border-white/10 shadow-inner">
         <div className="flex items-center gap-4">
           <div className="bg-white/10 p-3 rounded-2xl">
             <Droplets size={22} className="text-blue-100" />

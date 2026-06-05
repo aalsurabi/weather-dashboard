@@ -18,7 +18,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full md:w-96 relative">
+    <form onSubmit={handleSubmit} className="w-full md:w-96 relative flex-1 md:flex-initial">
       <div className="relative group">
         <input 
           type="text" 
