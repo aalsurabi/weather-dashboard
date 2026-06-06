@@ -5,10 +5,11 @@ import SearchBar from './SearchBar';
 import CurrentWeatherCard from './CurrentWeatherCard';
 import HourlyTimeline from './HourlyTimeline';
 import ForecastChart from './ForecastChart';
-import { Loader2, Sun, Moon, Star, Navigation } from 'lucide-react';
+import { Loader2, Sun, Moon, Star, Navigation, ChevronDown } from 'lucide-react';
 import ChatbotPopup from './ChatbotPopup';
 import WeatherSkeleton from './WeatherSkeleton';
 import WeatherAlerts from './WeatherAlerts';
+import LocalRecommendations from './LocalRecommendations';
 
 interface FavoriteLocation {
   name: string;
@@ -26,6 +27,20 @@ export default function WeatherDashboard() {
   const [favorites, setFavorites] = useState<FavoriteLocation[]>([]);
   const [mounted, setMounted] = useState(false);
   const [geolocating, setGeolocating] = useState(false);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+
+  // Handle scroll to hide/show scroll indicator
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        setShowScrollIndicator(false);
+      } else {
+        setShowScrollIndicator(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Read theme and favorites from localStorage or system preferences on mount
   useEffect(() => {
@@ -277,11 +292,31 @@ export default function WeatherDashboard() {
                   </div>
                 </div>
               </main>
+
+              <LocalRecommendations city={city} />
             </div>
           );
         })() : null}
       </div>
       <ChatbotPopup currentCity={city} />
+
+      {showScrollIndicator && (
+        <button
+          onClick={() => {
+            window.scrollTo({
+              top: window.innerHeight * 0.75,
+              behavior: 'smooth'
+            });
+          }}
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1.5 text-slate-500 hover:text-blue-500 transition-colors animate-bounce cursor-pointer group"
+          aria-label="Scroll down to explore"
+        >
+          <span className="text-[11px] font-extrabold tracking-wide bg-white/80 dark:bg-zinc-900/80 text-slate-600 dark:text-zinc-300 px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-zinc-800 shadow-lg backdrop-blur-md">
+            Mehr Infos & Tipps
+          </span>
+          <ChevronDown className="h-4.5 w-4.5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+        </button>
+      )}
     </div>
   );
 }

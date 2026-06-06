@@ -60,8 +60,8 @@ export default function ForecastChart({ forecast, theme, currentTemp }: Forecast
     });
 
     const parsedDays = Array.from(dailyMap.values()).slice(0, 7).map((dayData, index) => {
-      const minTemp = Math.min(...dayData.temps);
-      const maxTemp = Math.max(...dayData.temps);
+      const minTemp = Math.round(Math.min(...dayData.temps));
+      const maxTemp = Math.round(Math.max(...dayData.temps));
       const maxRain = dayData.rainProbs.length ? Math.max(...dayData.rainProbs) : 0;
       
       const iconCounts = dayData.icons.reduce((acc: Record<string, number>, icon) => {
@@ -109,7 +109,8 @@ export default function ForecastChart({ forecast, theme, currentTemp }: Forecast
           const leftPercent = overallSpan > 0 ? ((d.minTemp - overallMin) / overallSpan) * 100 : 0;
           const widthPercent = overallSpan > 0 ? ((d.maxTemp - d.minTemp) / overallSpan) * 100 : 100;
           
-          const clampedTemp = currentTemp !== undefined ? Math.max(d.minTemp, Math.min(d.maxTemp, currentTemp)) : d.minTemp;
+          const roundedCurrentTemp = currentTemp !== undefined ? Math.round(currentTemp) : undefined;
+          const clampedTemp = roundedCurrentTemp !== undefined ? Math.max(d.minTemp, Math.min(d.maxTemp, roundedCurrentTemp)) : d.minTemp;
           const currentTempPercent = overallSpan > 0 ? ((clampedTemp - overallMin) / overallSpan) * 100 : 0;
 
           return (

@@ -48,21 +48,35 @@ Stelle sicher, dass du [Node.js](https://nodejs.org/) (v18+) und `npm` installie
 ---
 
 ## 3. Beschreibung der implementierten Features
-
-### 💻 Benutzeroberfläche & Design
-* **Responsive Grid-Layout**: Anpassung der UI an Desktop-, Tablet- und Mobil-Bildschirmgrößen.
-* **Theme-Wechsel**: Umschalter zwischen Light- und Dark-Mode. Die bevorzugte Einstellung wird im `localStorage` gespeichert.
-* **7-Tage-Vorhersageliste**: Visualisierung der Wochentage mit Wettersymbolen, Regenwahrscheinlichkeit und einem horizontalen Balken für den täglichen Min/Max-Bereich relativ zur gesamten Woche (inklusive Punktmarkierung der aktuellen Temperatur am heutigen Tag).
-
-### 📍 Ortssuche & Geolocation
-* **Standort-Erkennung**: Ermittlung der Koordinaten über die HTML5 Geolocation-API und anschließende Namensauflösung (Reverse Geocoding) über OpenStreetMap Nominatim.
-* **Ortssuche**: Textsuche nach Stadtnamen sowie deutschen Postleitzahlen über die Zippopotam.us API.
-* **Favoriten-System**: Abspeichern von Orten in einer Favoritenliste, die persistent über den `localStorage` des Browsers verwaltet wird.
-
-### 🤖 Chatbot "rumbleAI"
-* **Datenintegration**: Übergabe der aktuellen Wetterdaten und Prognosen an das Sprachmodell zur Beantwortung von Anfragen mit lokalem Kontext.
-* **Anfragenklassifizierung**: Erkennung und Filterung anwendungsfremder Eingaben (z. B. mathematische Aufgaben). Diese werden mit einer vordefinierten Standardantwort abgewiesen.
-* **Vorschlagsfragen**: Schaltflächen für vorkonfigurierte Fragen zur schnellen Interaktion.
+ 
+ ### 💻 Benutzeroberfläche & Design
+ * **Responsive Grid-Layout**: Dynamische Ausrichtung auf Desktop-, Tablet- und Mobilgeräten.
+ * **Theme-Wechsel**: Umschalter zwischen Light- und Dark-Mode (gespeichert in `localStorage`).
+ * **Premium Skeleton Loading**: Ein maßgeschneidertes Shimmer-Layout (`WeatherSkeleton.tsx`), das während des Ladevorgangs das genaue Layout der Dashboard-Widgets nachahmt und Ladeverzögerungen kaschiert.
+ * **7-Tage-Vorhersage**: Anzeige der Min/Max-Temperaturen mit horizontalen Balken relativ zur gesamten Woche. Ein präziser Rundungs-Bugfix sorgt für die perfekte visuelle Ausrichtung aller Wochentage.
+ * **Interaktiver Scroll-Indikator**: Ein schwebender Pfeil-Button ("Mehr entdecken") am unteren Rand des Viewports führt den Benutzer durch weiches Scrollen tiefer in die Seite und blendet sich bei Scrollbewegungen selbstständig aus.
+ 
+ ### 📍 Ortssuche & Geolocation
+ * **Standort-Erkennung**: GPS-basierte Standorterkennung mit Reverse-Geocoding über OSM Nominatim.
+ * **Ortssuche & PLZ**: Volltextsuche nach Stadtnamen und deutschen Postleitzahlen (via Zippopotam.us API).
+ * **Favoriten-System**: Persistentes Speichern von Lieblingsorten im `localStorage`.
+ 
+ ### ⚡ DWD Unwetterwarnungen
+ * **Real-Time Integration**: Direktes Abrufen von amtlichen Unwetterwarnungen des Deutschen Wetterdienstes (DWD) über den `/alerts`-Endpunkt der Bright Sky API.
+ * **Dynamische Visualisierung**: Einstufung nach Schweregraden (`minor`, `moderate`, `severe`, `extreme`) mit farblich angepassten Warn-Bannern, ausklappbaren Details (Beschreibung & offizielle Verhaltensregeln) und animierten Warn-Bounces.
+ 
+ ### 📍 Lokale Insider-Tipps (Overpass API)
+ * **Intelligente API Route**: Ein Serverless Handler (`/api/recommend-activity`) liest das aktuelle Wetter und steuert eine räumliche Abfrage an die OpenStreetMap Overpass-API.
+ * **Wetterabhängiges Mapping**: 
+   * **Schlechtes Wetter**: Schlägt Indoor-POIs vor (Museen, Kinos, Bibliotheken, Theater, Hallencafés).
+   * **Gutes Wetter**: Schlägt Outdoor-POIs vor (Parks, Gärten, Schlösser/Burgen, Zoos, Aussichtspunkte).
+ * **Effizienz & Randomisierung**: Ergebnisse sind auf 15 Elemente limitiert (optimierter Payload) und werden per Fisher-Yates-Algorithmus gemischt, um genau 6 wechselnde, wetterbezogene Vorschläge anzuzeigen.
+ * **Caching**: Next.js-ISR-Caching (`revalidate: 10800` für 3 Stunden) auf allen Geocoding-, Wetter- und Overpass-Abfragen zur Lastreduktion.
+ 
+ ### 🤖 Chatbot "rumbleAI"
+ * **Kontext-Integration**: Beantwortung von Wetter-Fragen auf Basis der echten aktuellen Daten und Vorhersagen.
+ * **Sicherheitsfilter**: Blockieren von anwendungsfremden Anfragen (z.B. Rechenaufgaben) mittels einer System-Prompt-Klassifizierung.
+ * **Vorschlagsfragen**: Klickbare Kurzwahlen zur schnellen Interaktion.
 
 ---
 
