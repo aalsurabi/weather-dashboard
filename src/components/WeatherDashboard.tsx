@@ -7,6 +7,8 @@ import HourlyTimeline from './HourlyTimeline';
 import ForecastChart from './ForecastChart';
 import { Loader2, Sun, Moon, Star, Navigation } from 'lucide-react';
 import ChatbotPopup from './ChatbotPopup';
+import WeatherSkeleton from './WeatherSkeleton';
+import WeatherAlerts from './WeatherAlerts';
 
 interface FavoriteLocation {
   name: string;
@@ -213,10 +215,7 @@ export default function WeatherDashboard() {
         )}
 
         {loading && !weatherData ? (
-          <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh] gap-4">
-            <Loader2 className="animate-spin text-blue-500" size={56} />
-            <p className="text-zinc-500 font-medium">Wetterdaten werden geladen...</p>
-          </div>
+          <WeatherSkeleton />
         ) : weatherData ? (() => {
           let todayPrecipitationProbability = 0;
           let todayMinTemp = weatherData.currentWeather?.temperature ?? 0;
@@ -249,32 +248,36 @@ export default function WeatherDashboard() {
             }
           }
           return (
-            <main className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch pb-10">
-              {/* Left Tall Card */}
-              <div className="xl:col-span-4 h-full min-h-[600px] xl:min-h-[750px]">
-                <CurrentWeatherCard 
-                  weather={weatherData.currentWeather} 
-                  location={weatherData.location} 
-                  isFavorite={isCurrentFavorite}
-                  onToggleFavorite={toggleFavorite}
-                  todayPrecipitationProbability={todayPrecipitationProbability}
-                  todayMinTemp={todayMinTemp}
-                  todayMaxTemp={todayMaxTemp}
-                />
-              </div>
+            <div className="flex flex-col gap-8 pb-10">
+              <WeatherAlerts alerts={weatherData.alerts} />
               
-              {/* Right Stack */}
-              <div className="xl:col-span-8 flex flex-col gap-8 h-full">
-                <HourlyTimeline forecast={weatherData.forecast} />
-                <div className="flex-1">
-                  <ForecastChart 
-                    forecast={weatherData.forecast} 
-                    theme={theme} 
-                    currentTemp={weatherData.currentWeather?.temperature}
+              <main className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch">
+                {/* Left Tall Card */}
+                <div className="xl:col-span-4 h-full min-h-[600px] xl:min-h-[750px]">
+                  <CurrentWeatherCard 
+                    weather={weatherData.currentWeather} 
+                    location={weatherData.location} 
+                    isFavorite={isCurrentFavorite}
+                    onToggleFavorite={toggleFavorite}
+                    todayPrecipitationProbability={todayPrecipitationProbability}
+                    todayMinTemp={todayMinTemp}
+                    todayMaxTemp={todayMaxTemp}
                   />
                 </div>
-              </div>
-            </main>
+                
+                {/* Right Stack */}
+                <div className="xl:col-span-8 flex flex-col gap-8 h-full">
+                  <HourlyTimeline forecast={weatherData.forecast} />
+                  <div className="flex-1">
+                    <ForecastChart 
+                      forecast={weatherData.forecast} 
+                      theme={theme} 
+                      currentTemp={weatherData.currentWeather?.temperature}
+                    />
+                  </div>
+                </div>
+              </main>
+            </div>
           );
         })() : null}
       </div>

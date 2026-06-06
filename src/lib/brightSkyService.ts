@@ -1,8 +1,10 @@
 import { 
   BrightSkyCurrentWeatherSchema, 
   BrightSkyForecastSchema,
+  BrightSkyAlertsSchema,
   BrightSkyCurrentWeather,
-  BrightSkyForecast
+  BrightSkyForecast,
+  BrightSkyAlerts
 } from '../types';
 
 export async function getCurrentWeather(lat: number, lon: number): Promise<BrightSkyCurrentWeather> {
@@ -31,3 +33,16 @@ export async function getForecast(lat: number, lon: number): Promise<BrightSkyFo
   const data = await response.json();
   return BrightSkyForecastSchema.parse(data);
 }
+
+export async function getAlerts(lat: number, lon: number): Promise<BrightSkyAlerts> {
+  const url = `https://api.brightsky.dev/alerts?lat=${lat}&lon=${lon}`;
+  const response = await fetch(url);
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch alerts: ${response.statusText}`);
+  }
+  
+  const data = await response.json();
+  return BrightSkyAlertsSchema.parse(data);
+}
+
