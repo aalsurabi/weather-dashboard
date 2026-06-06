@@ -1,10 +1,10 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { Cloud, Sun, CloudRain, Snowflake, CloudLightning } from 'lucide-react';
+import { Cloud, Sun, Moon, CloudRain, Snowflake, CloudLightning } from 'lucide-react';
 
 const IconMap: Record<string, any> = {
   'clear-day': Sun,
-  'clear-night': Sun,
+  'clear-night': Moon,
   'partly-cloudy-day': Cloud,
   'partly-cloudy-night': Cloud,
   'cloudy': Cloud,
@@ -50,7 +50,18 @@ export default function HourlyTimeline({ forecast }: HourlyTimelineProps) {
               <div className={`text-sm mb-4 font-medium transition-colors duration-300 ${i === 0 ? 'text-blue-100' : 'text-slate-400 dark:text-zinc-400'}`}>
                 {time}
               </div>
-              <IconComp size={28} className={`mb-4 transition-colors duration-300 ${i === 0 ? 'text-white drop-shadow' : 'text-slate-600 dark:text-zinc-300'}`} />
+              <IconComp size={28} className={`transition-colors duration-300 ${i === 0 ? 'text-white drop-shadow' : 'text-slate-600 dark:text-zinc-300'}`} />
+              
+              <div className="h-4 flex items-center justify-center mt-1 mb-2 select-none">
+                {item.precipitation_probability !== null && item.precipitation_probability !== undefined && item.precipitation_probability > 0 ? (
+                  <span className={`text-[10px] font-bold ${i === 0 ? 'text-blue-100' : 'text-blue-500 dark:text-blue-400'} leading-none`}>
+                    {item.precipitation_probability}%
+                  </span>
+                ) : (
+                  <span className="text-[10px] opacity-0 leading-none">0%</span>
+                )}
+              </div>
+
               <div className={`text-xl font-bold transition-colors duration-300 ${i === 0 ? 'text-white' : 'text-slate-800 dark:text-zinc-100'}`}>
                 {Math.round(item.temperature ?? 0)}°
               </div>

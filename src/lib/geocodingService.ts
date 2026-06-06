@@ -10,9 +10,12 @@ export async function getCoordinates(query: string): Promise<GeocodingResult> {
     const lon = parseFloat(coordMatch[2]);
     let name = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
     try {
-      const reverseUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+      const reverseUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=de`;
       const reverseResponse = await fetch(reverseUrl, {
-        headers: { 'User-Agent': 'WeatherDash/1.0' }
+        headers: { 
+          'User-Agent': 'WeatherDash/1.0',
+          'Accept-Language': 'de'
+        }
       });
       if (reverseResponse.ok) {
         const reverseData = await reverseResponse.json();
@@ -48,7 +51,7 @@ export async function getCoordinates(query: string): Promise<GeocodingResult> {
     }
   }
 
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQuery)}&count=1`;
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQuery)}&count=1&language=de`;
   const response = await fetch(url);
 
   if (!response.ok) {

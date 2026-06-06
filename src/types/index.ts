@@ -6,8 +6,12 @@ export const BrightSkyCurrentWeatherSchema = z.object({
     relative_humidity: z.number().nullish(),
     wind_speed: z.number().nullish(),
     wind_speed_10: z.number().nullish(),
+    wind_direction: z.number().nullish(),
     icon: z.string().nullish(),
     timestamp: z.string(),
+    precipitation: z.number().nullish(),
+    precipitation_probability: z.number().nullish(),
+    pressure_msl: z.number().nullish(),
   }),
 });
 
@@ -18,8 +22,12 @@ export const BrightSkyForecastSchema = z.object({
       relative_humidity: z.number().nullish(),
       wind_speed: z.number().nullish(),
       wind_speed_10: z.number().nullish(),
+      wind_direction: z.number().nullish(),
       icon: z.string().nullish(),
       timestamp: z.string(),
+      precipitation: z.number().nullish(),
+      precipitation_probability: z.number().nullish(),
+      pressure_msl: z.number().nullish(),
     })
   ),
 });

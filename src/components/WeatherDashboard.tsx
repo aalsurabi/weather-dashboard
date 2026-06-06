@@ -179,7 +179,7 @@ export default function WeatherDashboard() {
         {mounted && favorites.length > 0 && (
           <div className="flex flex-wrap gap-2.5 items-center bg-white/40 dark:bg-zinc-900/30 border border-slate-200/50 dark:border-zinc-800/30 p-3.5 rounded-3xl backdrop-blur-md transition-all duration-300">
             <span className="text-xs font-bold text-slate-500 dark:text-zinc-400 flex items-center gap-1.5 mr-1 select-none">
-              <Star size={14} className="fill-yellow-400 text-yellow-400 animate-pulse" /> Favoriten
+              <Star size={14} className="fill-yellow-400 text-yellow-400" /> Favoriten
             </span>
             <div className="flex flex-wrap gap-2">
               {favorites.map((fav) => (
@@ -217,31 +217,66 @@ export default function WeatherDashboard() {
             <Loader2 className="animate-spin text-blue-500" size={56} />
             <p className="text-zinc-500 font-medium">Wetterdaten werden geladen...</p>
           </div>
-        ) : weatherData ? (
-          <main className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch pb-10">
-            {/* Left Tall Card */}
-            <div className="xl:col-span-4 h-full min-h-[600px] xl:min-h-[750px]">
-              <CurrentWeatherCard 
-                weather={weatherData.currentWeather} 
-                location={weatherData.location} 
-                isFavorite={isCurrentFavorite}
-                onToggleFavorite={toggleFavorite}
-              />
-            </div>
-            
-            {/* Right Stack */}
-            <div className="xl:col-span-8 flex flex-col gap-8 h-full">
-              <HourlyTimeline forecast={weatherData.forecast} />
-              <div className="flex-1">
-                <ForecastChart 
-                  forecast={weatherData.forecast} 
-                  theme={theme} 
-                  currentTemp={weatherData.currentWeather?.temperature}
+        ) : weatherData ? (() => {
+          let todayPrecipitationProbability = 0;
+          let todayMinTemp = weatherData.currentWeather?.temperature ?? 0;
+          let todayMaxTemp = weatherData.currentWeather?.temperature ?? 0;
+
+          if (weatherData.forecast && weatherData.forecast.length > 0) {
+            const todayStr = new Date().toDateString();
+            const todayForecast = weatherData.forecast.filter((item: any) => {
+              return new Date(item.timestamp).toDateString() === todayStr;
+            });
+            if (todayForecast.length > 0) {
+              const rainProbs = todayForecast
+                .map((item: any) => item.precipitation_probability)
+                .filter((val: any) => val !== null && val !== undefined);
+              if (rainProbs.length > 0) {
+                todayPrecipitationProbability = Math.max(...rainProbs);
+              }
+
+              const temps = todayForecast
+                .map((item: any) => item.temperature)
+                .filter((val: any) => val !== null && val !== undefined);
+              if (temps.length > 0) {
+                todayMinTemp = Math.min(...temps);
+                todayMaxTemp = Math.max(...temps);
+              }
+            } else {
+              todayPrecipitationProbability = weatherData.forecast[0].precipitation_probability ?? 0;
+              todayMinTemp = weatherData.forecast[0].temperature ?? todayMinTemp;
+              todayMaxTemp = weatherData.forecast[0].temperature ?? todayMaxTemp;
+            }
+          }
+          return (
+            <main className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch pb-10">
+              {/* Left Tall Card */}
+              <div className="xl:col-span-4 h-full min-h-[600px] xl:min-h-[750px]">
+                <CurrentWeatherCard 
+                  weather={weatherData.currentWeather} 
+                  location={weatherData.location} 
+                  isFavorite={isCurrentFavorite}
+                  onToggleFavorite={toggleFavorite}
+                  todayPrecipitationProbability={todayPrecipitationProbability}
+                  todayMinTemp={todayMinTemp}
+                  todayMaxTemp={todayMaxTemp}
                 />
               </div>
-            </div>
-          </main>
-        ) : null}
+              
+              {/* Right Stack */}
+              <div className="xl:col-span-8 flex flex-col gap-8 h-full">
+                <HourlyTimeline forecast={weatherData.forecast} />
+                <div className="flex-1">
+                  <ForecastChart 
+                    forecast={weatherData.forecast} 
+                    theme={theme} 
+                    currentTemp={weatherData.currentWeather?.temperature}
+                  />
+                </div>
+              </div>
+            </main>
+          );
+        })() : null}
       </div>
       <ChatbotPopup currentCity={city} />
     </div>

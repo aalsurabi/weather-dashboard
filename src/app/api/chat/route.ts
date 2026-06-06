@@ -81,7 +81,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // Phase 2: RAG Context Assembly
+    // Phase 2: Weather Context Assembly
     let weatherSummary = '';
     let resolvedName = currentCity || 'Berlin';
 

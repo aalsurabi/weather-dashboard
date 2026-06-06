@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { Sun, Cloud, CloudRain, Snowflake, CloudLightning } from 'lucide-react';
+import { Sun, Moon, Cloud, CloudRain, Snowflake, CloudLightning } from 'lucide-react';
 
 const IconMap: Record<string, any> = {
   'clear-day': Sun,
-  'clear-night': Sun,
+  'clear-night': Moon,
   'partly-cloudy-day': Cloud,
   'partly-cloudy-night': Cloud,
   'cloudy': Cloud,

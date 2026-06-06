@@ -108,7 +108,7 @@ export default function ChatbotPopup({ currentCity }: ChatbotPopupProps) {
         ) : (
           <>
             <Sparkles className="h-4.5 w-4.5 text-amber-400 group-hover:scale-115 group-hover:rotate-12 transition-all duration-300" />
-            <span>Frag rumbleAI ✨</span>
+            <span>Frag rumbleAI</span>
           </>
         )}
       </button>
